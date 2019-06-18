@@ -4,7 +4,6 @@ var spotify = require('node-spotify-api');
 var axios = require('axios');
 var moment = require('moment');
 var spotify = new spotify(keys.spotify);
-var movieName = process.argv[3];
 var omdb = require('omdb');
 
 
@@ -21,23 +20,7 @@ var getSpotify = function(songName) {
 }
 getSpotify();
 
-// OMDB retrieval
-/*var getMovie = function(movieName) {
-    // OMDB request
-    request('http://www.omdbapi.com/?t=' + movieName + '&y=&plot=short&r=json', function(error, response, body) {
-        console.log('error:', error);
-        console.log('statusCode:', response && response.statusCode);
-        console.log('body:', body);
-    });
-}*/
 
-/*function movieThis(){
-  var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-  axios.get(queryUrl).then(function(movieResponse){
-    console.log("Title: " + movieResponse.data.Title);
-        }
-    );
-  };*/
 
 var movieThis = function(movieName){
 
@@ -45,7 +28,16 @@ var movieThis = function(movieName){
     request('http://www.omdbapi.com/?t=' + movieName + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
     console.log('error:', error); // Print the error if one occurred
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-    console.log('body:', body); // Print the HTML for the Google homepage.
+    var jsonResponse = JSON.parse(body);
+    console.log("Title: " + jsonResponse.Title);
+    console.log("Year: " + jsonResponse.Year);
+    console.log("Rating: " + jsonResponse.Rated);
+    console.log("Countries produced in: " + jsonResponse.Country);
+    console.log("Languages: " + jsonResponse.Language);
+    console.log("Plot: " + jsonResponse.Plot);
+    console.log("Actors: " + jsonResponse.Actors);
+    console.log();
+    
 });
 }
 
