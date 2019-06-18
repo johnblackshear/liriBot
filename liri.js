@@ -4,6 +4,9 @@ var spotify = require('node-spotify-api');
 var axios = require('axios');
 var moment = require('moment');
 var spotify = new spotify(keys.spotify);
+var movieName = process.argv[3];
+var omdb = require('omdb');
+
 
 
 // Spotify retrieval
@@ -19,14 +22,33 @@ var getSpotify = function(songName) {
 getSpotify();
 
 // OMDB retrieval
-var getMovie = function(movieName) {
+/*var getMovie = function(movieName) {
     // OMDB request
     request('http://www.omdbapi.com/?t=' + movieName + '&y=&plot=short&r=json', function(error, response, body) {
         console.log('error:', error);
         console.log('statusCode:', response && response.statusCode);
         console.log('body:', body);
     });
+}*/
+
+/*function movieThis(){
+  var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+  axios.get(queryUrl).then(function(movieResponse){
+    console.log("Title: " + movieResponse.data.Title);
+        }
+    );
+  };*/
+
+var movieThis = function(movieName){
+
+    var request = require('request');
+    request('http://www.omdbapi.com/?t=' + movieName + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
+    console.log('error:', error); // Print the error if one occurred
+    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    console.log('body:', body); // Print the HTML for the Google homepage.
+});
 }
+
 
 // takes in all of the command line arguments
 var inputString = process.argv;
@@ -44,3 +66,20 @@ if (command === "concert-this") {
 } else if (command === "do-what-it-says") {
     console.log();
 }
+
+var pick = function(caseDate, functionData){
+    switch(caseDate){
+        case 'movie-this':
+            movieThis(functionData);
+    default:
+        console.log("Liri is uninformed");
+    }
+}
+
+var runThis = function(argOne, argTwo){
+    pick(argOne, argTwo);
+};
+
+runThis(process.argv[2], process.argv[3]);
+
+
