@@ -10,7 +10,7 @@ var omdb = require('omdb');
 
 // Spotify retrieval
 var getSpotify = function(songName) {
-    spotify.search({ type: 'track', query: 'dancing in the moonlight' }, function(err, data) {
+    spotify.search({ type: 'track', query: '' }, function(err, data) {
         if (err) {
             console.log('Error occurred: ' + err);
             return;
@@ -22,7 +22,24 @@ getSpotify();
 
 
 
+
+
 var movieThis = function(movieName){
+
+
+// Store all of the arguments in an array
+var nodeArgs = inputString;
+
+// Create an empty variable for holding the movie name
+var movieName = userInput;
+
+// Loop through all the words in the node argument
+// And do a little for-loop magic to handle the inclusion of "+"s
+for (var i = 4; i < nodeArgs.length; i++) {
+
+     movieName += "+" + nodeArgs[i];
+}
+
 
     var request = require('request');
     request('http://www.omdbapi.com/?t=' + movieName + '&y=&plot=short&apikey=trilogy', function (error, response, body) {
@@ -40,6 +57,8 @@ var movieThis = function(movieName){
     
 });
 }
+
+
 
 
 // takes in all of the command line arguments
@@ -63,9 +82,15 @@ var pick = function(caseDate, functionData){
     switch(caseDate){
         case 'movie-this':
             movieThis(functionData);
-    default:
-        console.log("Liri is uninformed");
+        case 'concert-this':
+            concertThis(functionData);
+        case 'spotify-this-song':
+            spotifysong(functionData);
+        case 'do-what-it-says':
+            doWhatItSays(functionData);
     }
+
+
 }
 
 var runThis = function(argOne, argTwo){
