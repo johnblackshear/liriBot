@@ -9,16 +9,23 @@ var omdb = require('omdb');
 
 
 // Spotify retrieval
-var getSpotify = function(songName) {
-    spotify.search({ type: 'track', query: '' }, function(err, data) {
+ var spotifySong = function(songName){
+    spotify.search({ type: 'track', query: userInput, limit: 5 }, 
+        function(err, data) {
         if (err) {
-            console.log('Error occurred: ' + err);
+            console.log('Error occurred' + err);
             return;
         }
-        console.log(data.tracks);
-    });
-}
-getSpotify();
+   
+        var trackData = data.tracks.items;
+            for (var i = 0; i < trackData[i].length; i++) {
+            console.log(trackData.artist[i].name);
+            }
+        }
+    );
+    };
+
+
 
 
 
@@ -82,12 +89,13 @@ var pick = function(caseDate, functionData){
     switch(caseDate){
         case 'movie-this':
             movieThis(functionData);
-        case 'concert-this':
-            concertThis(functionData);
+
         case 'spotify-this-song':
-            spotifysong(functionData);
+            spotifySong(functionData);
+       /* case 'concert-this':
+            concertThis(functionData);
         case 'do-what-it-says':
-            doWhatItSays(functionData);
+            doWhatItSays(functionData);*/
     }
 
 
