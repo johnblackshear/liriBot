@@ -8,30 +8,56 @@ var omdb = require('omdb');
 
 
 
-// Spotify retrieval
- var spotifySong = function(songName){
-    spotify.search({ type: 'track', query: userInput, limit: 5 }, 
-        function(err, data) {
-        if (err) {
-            console.log('Error occurred' + err);
-            return;
-        }
+ function getSpotify(userInput) {
    
-        var trackData = data.tracks.items;
-            for (var i = 0; i < trackData[i].length; i++) {
-            console.log(trackData.artist[i].name);
+    if (userInput === undefined) {
+        userInput = "I want it that way";
+
+      }
+        spotify.search({ type: 'track', query: userInput, limit: 5 }, function (error, data) {
+            if (!error) {
+                for (var i = 0; i < data.tracks.items.length; i++) {
+                    var songData = data.tracks.items[i];
+                    console.log("Artist: " + songData.artists[0].name);
+                    console.log("Song: " + songData.name);
+                    console.log("Preview URL: " + songData.preview_url);
+                    console.log("Album: " + songData.album.name);
+                    console.log("----------");
+                }
+            } else {
+                console.log("An error has occurred. Please try again.");
             }
+        })
+    }
+
+    function concertThis(artist){
+        if(userInput === undefined){
+           userInput = "chicago";
         }
-    );
-    };
+        var artist = userInput;
+        
+    for (var i = 4; i < inputString.length; i++) {
 
-
-
-
+       artist  += "+" + inputString[i];
+   }
+   var request = require('request');
+   request("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp", function (error, response, body){
+       console.log("error: ", error);
+       console.log('statusCode: ', response && response.statusCode);
+       var jsonResponse = JSON.parse(body)[0];
+       console.log("Artist: " + jsonResponse.lineup);
+       console.log("Venue: " + jsonResponse.venue.name);
+       console.log("Location: " + jsonResponse.venue.city + ",", jsonResponse.venue.region + ",",  jsonResponse.venue.country );
+       console.log("Date: " + moment(jsonResponse.datetime).format('MMMM Do YYYY, h:mm:ss a'));
+   });
+}
 
 
 
 var movieThis = function(movieName){
+    if (movieName === undefined) {
+        movieName = "Mr. Nobody";
+      }
 
 
 // Store all of the arguments in an array
@@ -80,7 +106,7 @@ if (command === "concert-this") {
 } else if (command === "spotify-this-song") {
     console.log();
 } else if (command === "movie-this") {
-    console.log();
+    console.log("hey");
 } else if (command === "do-what-it-says") {
     console.log();
 }
@@ -89,12 +115,13 @@ var pick = function(caseDate, functionData){
     switch(caseDate){
         case 'movie-this':
             movieThis(functionData);
+            break;
 
         case 'spotify-this-song':
-            spotifySong(functionData);
-       /* case 'concert-this':
+            getSpotify(functionData);
+        case 'concert-this':
             concertThis(functionData);
-        case 'do-what-it-says':
+       /* case 'do-what-it-says':
             doWhatItSays(functionData);*/
     }
 
