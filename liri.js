@@ -46,9 +46,7 @@ if (command === "concert-this") {
     }
 
     function concertThis(artist){
-        if(userInput === undefined){
-           userInput = "chicago";
-        }
+        
         var artist = userInput;
         
     for (var i = 4; i < inputString.length; i++) {
@@ -71,11 +69,7 @@ if (command === "concert-this") {
 
 
 var movieThis = function(movieName){
-    if (movieName === undefined) {
-        movieName = "Mr. Nobody";
-      }
-
-
+   
 // Store all of the arguments in an array
 var nodeArgs = inputString;
 
