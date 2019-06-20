@@ -6,25 +6,43 @@ var moment = require('moment');
 var spotify = new spotify(keys.spotify);
 var omdb = require('omdb');
 
+// takes in all of the command line arguments
+var inputString = process.argv;
+// captures the operator and gives command
+var command = inputString[2];
+// input being used for data-retrieval
+var userInput = inputString[3];
+
+if (command === "concert-this") {
+    console.log();
+} else if (command === "spotify-this-song") {
+    console.log();
+} else if (command === "movie-this") {
+    console.log("hey");
+} else if (command === "do-what-it-says") {
+    console.log();
+}
+
 
 
  function getSpotify(userInput) {
    
     if (userInput === undefined) {
         userInput = "I want it that way";
-
       }
-        spotify.search({ type: 'track', query: userInput, limit: 5 }, function (error, data) {
-            if (!error) {
-                for (var i = 0; i < data.tracks.items.length; i++) {
-                    var songData = data.tracks.items[i];
-                    console.log("Artist: " + songData.artists[0].name);
-                    console.log("Song: " + songData.name);
-                    console.log("Preview URL: " + songData.preview_url);
-                    console.log("Album: " + songData.album.name);
-                    console.log("----------");
-                }
-            } else {
+
+    spotify.search({ type: 'track', query: userInput, limit: 5 }, function (error, data) {
+        if (!error) {
+            for (var i = 0; i < data.tracks.items.length; i++) {
+                var songData = data.tracks.items[i];
+                console.log("------INFO------")
+                console.log("Artist: " + songData.artists[0].name);
+                console.log("Song: " + songData.name);
+                console.log("Preview URL: " + songData.preview_url);
+                console.log("Album: " + songData.album.name);
+                console.log("-------END------");
+            }
+       } else {
                 console.log("An error has occurred. Please try again.");
             }
         })
@@ -45,6 +63,7 @@ var omdb = require('omdb');
        console.log("error: ", error);
        console.log('statusCode: ', response && response.statusCode);
        var jsonResponse = JSON.parse(body)[0];
+       console.log("------INFO------")
        console.log("Artist: " + jsonResponse.lineup);
        console.log("Venue: " + jsonResponse.venue.name);
        console.log("Location: " + jsonResponse.venue.city + ",", jsonResponse.venue.region + ",",  jsonResponse.venue.country );
@@ -79,6 +98,7 @@ for (var i = 4; i < nodeArgs.length; i++) {
     console.log('error:', error); // Print the error if one occurred
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     var jsonResponse = JSON.parse(body);
+    console.log("------INFO------")
     console.log("Title: " + jsonResponse.Title);
     console.log("Year: " + jsonResponse.Year);
     console.log("Rating: " + jsonResponse.Rated);
@@ -86,29 +106,9 @@ for (var i = 4; i < nodeArgs.length; i++) {
     console.log("Languages: " + jsonResponse.Language);
     console.log("Plot: " + jsonResponse.Plot);
     console.log("Actors: " + jsonResponse.Actors);
-    console.log();
+    console.log("------END------");
     
 });
-}
-
-
-
-
-// takes in all of the command line arguments
-var inputString = process.argv;
-// captures the operator and gives command
-var command = inputString[2];
-// input being used for data-retrieval
-var userInput = inputString[3];
-
-if (command === "concert-this") {
-    console.log();
-} else if (command === "spotify-this-song") {
-    console.log();
-} else if (command === "movie-this") {
-    console.log("hey");
-} else if (command === "do-what-it-says") {
-    console.log();
 }
 
 var pick = function(caseDate, functionData){
