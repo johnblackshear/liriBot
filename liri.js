@@ -5,6 +5,7 @@ var axios = require('axios');
 var moment = require('moment');
 var spotify = new spotify(keys.spotify);
 var omdb = require('omdb');
+var fs = require('fs');
 
 // takes in all of the command line arguments
 var inputString = process.argv;
@@ -26,10 +27,6 @@ if (command === "concert-this") {
 
 
  function getSpotify(userInput) {
-   
-    if (userInput === undefined) {
-        userInput = "I want it that way";
-      }
 
     spotify.search({ type: 'track', query: userInput, limit: 5 }, function (error, data) {
         if (!error) {
@@ -111,7 +108,7 @@ for (var i = 4; i < nodeArgs.length; i++) {
 });
 }
 
-var pick = function(caseDate, functionData){
+var choice = function(caseDate, functionData){
     switch(caseDate){
         case 'movie-this':
             movieThis(functionData);
@@ -119,17 +116,31 @@ var pick = function(caseDate, functionData){
 
         case 'spotify-this-song':
             getSpotify(functionData);
+            break;
         case 'concert-this':
             concertThis(functionData);
-       /* case 'do-what-it-says':
-            doWhatItSays(functionData);*/
+            break;
+       case 'do-what-it-says':
+            doWhatItSays(functionData);
+            break;
     }
 
 
 }
 
+var doWhatItSays = function(){
+    fs.readFile('random.txt', 'utf8', function(error, data){
+        if (error) throw error;
+        console.log(data);
+        var splitdata = data.split(",");
+        if (splitdata.length == 2){
+            choice(splitdata[0], splitdata[1]);
+        }
+      });
+}
+
 var runThis = function(argOne, argTwo){
-    pick(argOne, argTwo);
+    choice(argOne, argTwo);
 };
 
 runThis(process.argv[2], process.argv[3]);
